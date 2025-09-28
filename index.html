@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robux Donations</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="spaceCanvas"></canvas>
+<canvas id="fallingStarsCanvas"></canvas>
+
+<!-- NAVBAR -->
+<nav class="topbar">
+  <div class="nav-left">
+    <h1>Support Me</h1>
+  </div>
+  <div class="nav-right">
+    <button id="discordNavBtn" class="contact-btn">Contact</button>
+  </div>
+</nav>
+
+<!-- HERO SECTION -->
+<div class="hero">
+  <h1>Support Me with Robux</h1>
+  <p>If you’d like to support me, you can donate Robux by clicking a button below. Every contribution helps and is greatly appreciated!</p>
+</div>
+
+<!-- DONATE BUTTONS -->
+<div class="donate-container" id="donateContainer"></div>
+<div class="center">
+  <button id="toggleMore" class="more-btn">Show More Options</button>
+</div>
+
+<!-- LEADERBOARD -->
+<div class="leaderboard-section">
+  <h2>Top Donators</h2>
+  <div id="leaderboard"></div>
+  <div id="leaderboardControls" class="leaderboard-controls">
+    <button id="viewMoreBtn" class="more-btn">View Top 10</button>
+    <button id="nextPageBtn" class="more-btn">→</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <h2>Connect with me</h2>
+  <div class="social-icons">
+    <button onclick="window.open('https://youtube.com/@3v3n.evan.discord?si=nhU7k2L99GBEbBd9','_blank')">
+      <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
+    </button>
+    <button id="discordBtn">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord">
+    </button>
+    <button onclick="window.open('https://www.roblox.com/users/7701128295/profile','_blank')">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111711.png" alt="Roblox">
+    </button>
+  </div>
+  <p class="footer-credit">Made by 3v3n.evan</p>
+</footer>
+
+<!-- Discord Modal -->
+<div id="discordModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Contact</h3>
+      <span class="close">&times;</span>
+    </div>
+    <div class="modal-body">
+      <div class="discord-message from-me">
+        <p>Discord Username: <strong>3v3n.evan</strong></p>
+      </div>
+      <div class="discord-message from-me">
+        <p>Feel free to add me and chat anytime!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
