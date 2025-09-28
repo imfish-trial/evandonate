@@ -46,7 +46,7 @@ contactBtn.addEventListener("click", () => contactModal.style.display = "block")
 closeBtn.addEventListener("click", () => contactModal.style.display = "none");
 window.addEventListener("click", (e) => { if(e.target==contactModal) contactModal.style.display="none"; });
 
-// ===== SPACE CANVAS =====
+// ===== SPACE CANVAS IMPROVED =====
 const canvas = document.getElementById("spaceCanvas");
 const ctx = canvas.getContext("2d");
 let stars = [];
@@ -56,55 +56,71 @@ function resizeCanvas(){ canvas.width=window.innerWidth; canvas.height=window.in
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
+// Clearer stars
 function createStars(count){
   stars = [];
   for(let i=0;i<count;i++){
     stars.push({
       x: Math.random()*canvas.width,
       y: Math.random()*canvas.height,
-      size: Math.random()*1.2 + 0.5,
-      opacity: Math.random(),
-      delta: Math.random()*0.02 + 0.005
+      size: Math.random()*1.5 + 0.5,
+      opacity: Math.random()*0.7 + 0.3,
+      delta: Math.random()*0.01 + 0.002
     });
   }
 }
 createStars(400);
 
+// Better shooting stars
 function createShootingStar(){
   shootingStars.push({
     x: Math.random()*canvas.width,
     y: Math.random()*canvas.height/2,
-    len: Math.random()*100 + 50,
-    speed: Math.random()*10 + 5,
+    length: Math.random()*150 + 100,
+    speed: Math.random()*15 + 10,
     angle: Math.random()*0.3 - 0.15,
-    opacity: 1
+    opacity: 1,
+    trail: []
   });
 }
-setInterval(createShootingStar, 2000);
+setInterval(createShootingStar, 1500);
 
 function drawStars(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // Draw stars as crisp squares (better on mobile)
   stars.forEach(s => {
     ctx.fillStyle=`rgba(255,255,255,${s.opacity})`;
-    ctx.beginPath();
-    ctx.arc(s.x,s.y,s.size,0,Math.PI*2);
-    ctx.fill();
+    ctx.fillRect(s.x,s.y,s.size,s.size);
     s.opacity += s.delta;
-    if(s.opacity>1 || s.opacity<0.2) s.delta*=-1;
+    if(s.opacity>1 || s.opacity<0.3) s.delta*=-1;
   });
+
+  // Draw shooting stars with fading trails
   shootingStars.forEach((s, idx) => {
-    ctx.strokeStyle = `rgba(255,255,255,${s.opacity})`;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(s.x, s.y);
-    ctx.lineTo(s.x - s.len * Math.cos(s.angle), s.y - s.len * Math.sin(s.angle));
-    ctx.stroke();
+    s.trail.push({x: s.x, y: s.y});
+    if(s.trail.length>10) s.trail.shift();
+
+    for(let t=0;t<s.trail.length;t++){
+      const trailPart = s.trail[t];
+      const alpha = (t+1)/s.trail.length * s.opacity;
+      ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      if(t<s.trail.length-1){
+        ctx.moveTo(trailPart.x, trailPart.y);
+        ctx.lineTo(s.trail[t+1].x, s.trail[t+1].y);
+        ctx.stroke();
+      }
+    }
+
     s.x += s.speed * Math.cos(s.angle);
     s.y += s.speed * Math.sin(s.angle);
     s.opacity -= 0.02;
-    if(s.opacity <= 0) shootingStars.splice(idx,1);
+    if(s.opacity <= 0 || s.x > canvas.width || s.y > canvas.height) shootingStars.splice(idx,1);
   });
 }
+
 function animate(){
   drawStars();
   requestAnimationFrame(animate);
